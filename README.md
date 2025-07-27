@@ -212,9 +212,13 @@ Lizenz
 
 Dieses Projekt steht unter der MIT-Lizenz. Details finden Sie in der LICENSE-Datei. Sie können den Code frei verwenden, modifizieren und verbreiten.
 
-___
+_____
 
-<img src="https://raw.githubusercontent.com/Digid0t/DigiDot_2/main/DigiDot_2_QR.png" alt="DigiDot 2 QR Code" width="300">
+![PWA_Iconer](https://raw.githubusercontent.com/Digid0t/DigiDot_3/main/PWA_Iconer.png)
 
-___
 
+_____
+
+<img src="https://raw.githubusercontent.com/Digid0t/DigiDot_3/main/QR-CodeIMG.png" alt="DigiDot 3 QR Code" width="300">
+
+____
