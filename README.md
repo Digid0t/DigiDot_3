@@ -24,7 +24,7 @@ web:
 https://raw.githack.com/Digid0t/DigiDot_3/main/index.html
 
 bildlink:
-https://github.com/Digid0t/DigiDot_3/blob/main/QR-Code%20Replacer.png
+https://github.com/Digid0t/DigiDot_3/blob/main/QR-CodeIMG.png
 
 ____
 
