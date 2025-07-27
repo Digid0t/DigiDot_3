@@ -5,13 +5,28 @@ Image_generator: von Quellbild zur Erstellung von hochwertigen Icons in den Form
 
 ![alt text](https://img.shields.io/badge/Lizenz-MIT-blue.svg)
 
-
+![HTML5](https://img.shields.io/badge/Technologie-HTML5-orange.svg)
 ![alt text](https://img.shields.io/badge/Technologie-Vanilla_JS-yellow.svg)
 
 
 ![alt text](https://img.shields.io/badge/Abhängigkeiten-Pica_&_JSZip-orange.svg)
+____
 
+The PWA_Iconer:
 Ein rein clientseitiges Tool, das aus einem einzigen Bild einen vollständigen Satz von App-Icons generiert. Die Besonderheit liegt in einer fortschrittlichen Hybrid-Rendering-Pipeline, die selbst bei winzigen Größen (16x16, 32x32) für maximale Schärfe und Klarheit sorgt, wo Standard-Skalierungsalgorithmen versagen.
+
+____
+
+code:
+https://github.com/Digid0t/DigiDot_3/blob/main/index.html
+
+web:
+https://raw.githack.com/Digid0t/DigiDot_3/main/index.html
+
+bildlink:
+https://github.com/Digid0t/DigiDot_3/blob/main/QR-Code%20Replacer.png
+
+____
 
 (Hinweis: Ersetzen Sie die obige URL durch einen echten Screenshot Ihres Tools)
 Inhaltsverzeichnis
@@ -196,3 +211,10 @@ Mögliche Verbesserungen
 Lizenz
 
 Dieses Projekt steht unter der MIT-Lizenz. Details finden Sie in der LICENSE-Datei. Sie können den Code frei verwenden, modifizieren und verbreiten.
+
+___
+
+<img src="https://raw.githubusercontent.com/Digid0t/DigiDot_2/main/DigiDot_2_QR.png" alt="DigiDot 2 QR Code" width="300">
+
+___
+
