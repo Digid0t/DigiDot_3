@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon-Generator (Hohe Qualität)</title>
+    <!-- Einbindung der JSZip-Bibliothek -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Einbindung der pica.js Bibliothek für hohe Qualität -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/9.0.1/pica.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4a4e69;
+            --secondary-color: #9a8c98;
+            --background-color: #f2e9e4;
+            --text-color: #22223b;
+            --accent-color: #c9ada7;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .controls > * {
+            margin-bottom: 20px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+            border: 2px dashed var(--secondary-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .file-input-wrapper:hover {
+            background-color: #f9f9f9;
+            border-color: var(--primary-color);
+        }
+
+        #fileInput {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #fileName {
+            margin-top: 10px;
+            font-style: italic;
+            color: var(--secondary-color);
+            min-height: 20px;
+        }
+
+        .format-selection fieldset {
+            border: 1px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 0;
+        }
+        
+        .format-selection legend {
+            padding: 0 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .format-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .format-options label {
+            cursor: pointer;
+        }
+
+        #generateBtn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #generateBtn:disabled {
+            background-color: var(--secondary-color);
+            cursor: not-allowed;
+        }
+
+        #generateBtn:not(:disabled):hover {
+            background-color: #3b3e58;
+        }
+        
+        #generateBtn:not(:disabled):active {
+            transform: scale(0.98);
+        }
+
+        .loader {
+            display: none;
+            margin: 15px auto 0;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Icon-Generator 512x512 bis 16x16 </h1>
+        <div class="controls">
+            <div class="file-input-wrapper">
+                <label for="fileInput">Klicken oder Bild hierher ziehen</label>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+            <div id="fileName">Kein Bild ausgewählt</div>
+            
+            <div class="format-selection">
+                 <fieldset>
+                    <legend>Ausgabeformat</legend>
+                    <div class="format-options">
+                        <label>
+                            <input type="radio" name="format" value="webp" checked> WEBP
+                        </label>
+                        <label>
+                            <input type="radio" name="format" value="png"> PNG
+                        </label>
+                        <label>
+                            <input type="radio" name="format" value="jpeg"> JPG
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button id="generateBtn" disabled>Icons generieren & herunterladen</button>
+            <div class="loader" id="loader"></div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileName');
+        const generateBtn = document.getElementById('generateBtn');
+        const loader = document.getElementById('loader');
+        
+        // pica-Instanz initialisieren
+        const picaInstance = window.pica();
+        let selectedFile = null;
+
+        fileInput.addEventListener('change', (event) => {
+            selectedFile = event.target.files[0];
+            if (selectedFile) {
+                fileNameDisplay.textContent = selectedFile.name;
+                generateBtn.disabled = false;
+            } else {
+                fileNameDisplay.textContent = 'Kein Bild ausgewählt';
+                generateBtn.disabled = true;
+            }
+        });
+
+        generateBtn.addEventListener('click', async () => {
+            if (!selectedFile) {
+                alert('Bitte wählen Sie zuerst ein Bild aus.');
+                return;
+            }
+
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Verarbeite...';
+            loader.style.display = 'block';
+
+            const SIZES = [16, 32, 72, 96, 128, 144, 152, 180, 192, 384, 512];
+            const selectedFormat = document.querySelector('input[name="format"]:checked').value;
+            const mimeType = `image/${selectedFormat}`;
+            const fileExtension = selectedFormat === 'jpeg' ? 'jpg' : selectedFormat;
+            
+            const zip = new JSZip();
+            const image = await loadImage(selectedFile);
+
+            // Promise-Array für alle Resizing-Vorgänge erstellen
+            const resizePromises = SIZES.map(size => {
+                return resizeImage(image, size, mimeType)
+                    .then(blob => {
+                        const fileName = `icon-${size}x${size}.${fileExtension}`;
+                        zip.file(fileName, blob);
+                    });
+            });
+
+            // Warten, bis alle Bilder verarbeitet und zum ZIP hinzugefügt wurden
+            await Promise.all(resizePromises);
+
+            // ZIP-Datei erstellen und Download auslösen
+            zip.generateAsync({ type: "blob" })
+                .then(function(content) {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(content);
+                    link.download = 'icons.zip';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    resetUI();
+                });
+        });
+
+        function loadImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        /**
+         * Ändert die Größe eines Bildes mit pica.js für hohe Qualität.
+         * @param {HTMLImageElement} image Das Quellbild.
+         * @param {number} size Die gewünschte Kantenlänge des quadratischen Bildes.
+         * @param {string} mimeType Der MIME-Typ für das Ausgabeformat.
+         * @returns {Promise<Blob>} Ein Promise, das mit dem Blob des verkleinerten Bildes aufgelöst wird.
+         */
+        function resizeImage(image, size, mimeType) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+
+            // pica verwenden, um vom Quellbild auf den Ziel-Canvas zu zeichnen
+            return picaInstance.resize(image, canvas, {
+                // pica wählt automatisch gute Algorithmen
+                quality: 3, // Lanczos3
+                alpha: true // Transparenz beibehalten
+            })
+            .then(resultCanvas => picaInstance.toBlob(resultCanvas, mimeType, 0.95)); // Qualität 0.95 für jpg/webp
+        }
+        
+        function resetUI() {
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Icons generieren & herunterladen';
+            loader.style.display = 'none';
+            fileInput.value = '';
+            fileNameDisplay.textContent = 'Kein Bild ausgewählt';
+            selectedFile = null;
+        }
+
+    </script>
+</body>
+</html>
