@@ -24,7 +24,7 @@ web:
 https://raw.githack.com/Digid0t/DigiDot_3/main/index.html
 
 bildlink:
-https://github.com/Digid0t/DigiDot_3/blob/main/QR-CodeIMG.png
+https://github.com/Digid0t/DigiDot_3/blob/main/DigiDot_3_QR.png
 
 ____
 
@@ -219,6 +219,6 @@ _____
 
 _____
 
-<img src="https://raw.githubusercontent.com/Digid0t/DigiDot_3/main/QR-CodeIMG.png" alt="DigiDot 3 QR Code" width="300">
+<img src="https://raw.githubusercontent.com/Digid0t/DigiDot_3/main/DigiDot_3_QR.png" alt="DigiDot 3 QR Code" width="300">
 
 ____
